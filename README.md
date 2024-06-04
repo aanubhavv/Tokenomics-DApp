@@ -83,16 +83,6 @@ The smart contracts for this project are located in the `contracts` directory. T
 
 Ensure you have the appropriate network configuration in `hardhat.config.js`.
 
-## Contributing
-
-We welcome contributions to enhance the functionality of Tokenomics-DApp. To contribute, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch: `git checkout -b feature-branch-name`
-3. Make your changes and commit them: `git commit -m 'Add some feature'`
-4. Push to the branch: `git push origin feature-branch-name`
-5. Open a pull request.
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

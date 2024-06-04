@@ -7,6 +7,7 @@ const STAKEHOLDER_MANAGEMENT_ADDRESS = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F05
 
 export default function Claim() {
   const [message, setMessage] = useState('');
+  const [popUp, setPopUp] = useState('');
   const [walletConnected, setWalletConnected] = useState(false);
   const [signer, setSigner] = useState(null);
   const [orgAddress, setOrgAddress] = useState('');
@@ -97,74 +98,107 @@ export default function Claim() {
       );
 
       if (!eligibleStakeholder) {
-        setMessage('Invalid wallet address');
+        setPopUp('Invalid wallet address');
         return;
       }
 
       if (eligibleStakeholder.claimed) {
-        setMessage('✅ Tokens have already been claimed');
+        setPopUp('✅ Tokens have already been claimed');
         return;
       }
 
       const vestingEndTime = parseInt(eligibleStakeholder.startTime) + parseInt(eligibleStakeholder.vestingPeriod);
       if (vestingEndTime > Math.floor(Date.now() / 1000)) {
         const vestingEndDate = new Date(vestingEndTime * 1000).toLocaleString();
-        setMessage(`❌ Vesting period is not over, please wait. Vesting period will be over on ${vestingEndDate}`);
+        setPopUp(`❌ Vesting period is not over, please wait. Vesting period will be over on ${vestingEndDate}`);
         return;
       }
 
       const tx = await stakeholderManagementContract.claimTokens(orgAddress);
       await tx.wait();
-      setMessage('✅ Tokens claimed successfully');
+      setPopUp('✅ Tokens claimed successfully');
       fetchStakeholders();
     } catch (err) {
       console.error(err);
-      setMessage('Error claiming tokens');
+      setPopUp('Error claiming tokens');
     }
 }
 
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">Claim Tokens</h1>
+return (
+  <div className="container mx-auto px-4 py-8 bg-gray-900 min-h-screen text-white">
+    <h1 className="text-4xl font-extrabold mb-6 text-center text-green-400">Claim Tokens</h1>
 
-      {!walletConnected && (
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={connectWallet}>Connect Wallet</button>
-      )}
+    {!walletConnected && (
+      <div className="flex justify-center">
+        <button className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105" onClick={connectWallet}>Connect Wallet</button>
+      </div>
+    )}
 
-      {walletConnected && (
-        <>
-          <p className="text-lg font-semibold mb-4">Connected Address: {addr}</p>
-          <div className="mb-4">
-            <h2 className="text-xl font-semibold mb-2">Enter Organization Address</h2>
+    {walletConnected && (
+      <>
+        <div className="text-center mb-8">
+          <p className="text-lg font-semibold bg-gray-800 p-4 rounded-lg inline-block">
+            Connected Address: <span className="text-green-400">{addr}</span>
+          </p>
+        </div>
+        {message && <p className="mt-4 mb-4 text-red-500 text-center"><span className="text-white">Message: </span>{message}</p>}
+        <div className="mb-8 p-6 rounded-lg shadow-lg bg-gray-800">
+          <h2 className="text-2xl font-semibold mb-4 text-green-400">Enter Organization Address</h2>
+          <div className="flex flex-col">
             <input
               type="text"
               placeholder="Organization Address"
               value={orgAddress}
               onChange={(e) => setOrgAddress(e.target.value)}
-              className="border rounded w-full py-2 px-4"
+              className="border rounded w-full py-2 px-4 bg-gray-700 text-gray-300 border-gray-600 placeholder-gray-500 focus:outline-none focus:border-green-400"
             />
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2" onClick={fetchStakeholders}>Fetch Stakeholders</button>
+            <button className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105 mt-4 self-start" onClick={fetchStakeholders}>Fetch Stakeholders</button>
           </div>
+        </div>
 
-          <div className="mb-4">
-            <h2 className="text-xl font-semibold mb-2">Claimable Stakeholders</h2>
-            <ul>
-              {stakeholders.map((stakeholder, index) => (
-                <li key={index} className="mb-2">
-                  {stakeholder.name} - {stakeholder.stakeholderAddress} - {stakeholder.claimed ? 'Claimed' : 'Not Claimed'} - Amount: {ethers.utils.formatUnits("100000000000000000000", 18)} tokens
+        <div className="mb-8 p-6 rounded-lg shadow-lg bg-gray-800">
+          <h2 className="text-2xl font-semibold mb-4 text-green-400">Claimable Stakeholders</h2>
+          <ul>
+            {stakeholders.map((stakeholder, index) => (
+              <li key={index} className="mb-2">
+                {stakeholder.name} - {stakeholder.stakeholderAddress} - {stakeholder.claimed ? 'Claimed' : 'Not Claimed'} - Amount: {ethers.utils.formatUnits("100000000000000000000", 18)} tokens
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mb-8 p-6 rounded-lg shadow-lg bg-gray-800">
+          <h2 className="text-2xl font-semibold mb-4 text-green-400">Your Allocations</h2>
+          {stakeholders.filter(stakeholder => stakeholder.stakeholderAddress === addr).length === 0 ? (
+            <p className="text-lg text-red-500">You are not allocated any tokens.</p>
+          ) : (
+            <ul className="space-y-4">
+              {stakeholders.filter(stakeholder => stakeholder.stakeholderAddress === addr).map((stakeholder, index) => (
+                <li key={index} className="p-4 bg-gray-900 rounded-lg shadow-lg border border-gray-700 flex justify-between items-center">
+                  <div>
+                    <h3 className="text-xl font-semibold text-green-400">{stakeholder.name}</h3>
+                    <p>{stakeholder.stakeholderAddress}</p>
+                    <p className="mt-2">{stakeholder.claimed ? 'Claimed' : 'Not Claimed'}</p>
+                    {message && <p className="mt-4 mb-4 text-green-500">{popUp}</p>}
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xl font-bold">{ethers.utils.formatUnits("100000000000000000000", 18)} tokens</p>
+                  </div>
                 </li>
               ))}
             </ul>
-          </div>
-
-          {walletConnected && (
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={claimTokens}>Claim Tokens</button>
           )}
-        </>
-      )}
+          {stakeholders.filter(stakeholder => stakeholder.stakeholderAddress === addr).length > 0 && (
+            <div className="mt-6 flex justify-center">
+              <button className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105" onClick={claimTokens}>Claim Tokens</button>
+            </div>
+          )}
+        </div>
+      </>
+    )}
+  </div>
+);
 
-      {message && <p className="mt-4 text-red-500">{message}</p>}
-    </div>
-  );
+
 }

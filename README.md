@@ -86,7 +86,3 @@ Ensure you have the appropriate network configuration in `hardhat.config.js`.
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-Feel free to customize this README further to better fit the specifics of your project.

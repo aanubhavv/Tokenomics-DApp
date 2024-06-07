@@ -49,7 +49,7 @@ export default function Admin() {
     try {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
       const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = provider.getSigner();
+      const signer = await provider.getSigner();
       setSigner(signer);
       setWalletConnected(true);
       setMessage('Wallet connected');

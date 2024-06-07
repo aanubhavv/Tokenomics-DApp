@@ -35,8 +35,8 @@ export default function Admin() {
       setWalletConnected(false);
       setMessage('Please connect to your wallet');
     } else {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
       setSigner(signer);
       setWalletConnected(true);
       setMessage('Wallet connected');
@@ -48,7 +48,7 @@ export default function Admin() {
   async function connectWallet() {
     try {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = provider.getSigner();
       setSigner(signer);
       setWalletConnected(true);
@@ -210,6 +210,4 @@ export default function Admin() {
       )}
     </div>
   );
-  
-  
 }

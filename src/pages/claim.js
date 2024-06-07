@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import StakeholderManagement from 'D:/Programming/Solidity/ETH Advanced/module-1-assessment/artifacts/contracts/manage.sol/StakeholderManagement.json';
+require('dotenv').config()
 
-const ORGANIZATION_REGISTRY_ADDRESS = YOUR-ORGANIZATION-REGISTRY-ADDRESS;
-const STAKEHOLDER_MANAGEMENT_ADDRESS = YOUR-STAKEHOLDER-MANAGEMENT-ADDRESS;
+const ORGANIZATION_REGISTRY_ADDRESS = process.env.ORGANIZATION_REGISTRY_ADDRESS;
+const STAKEHOLDER_MANAGEMENT_ADDRESS = process.env.STAKEHOLDER_MANAGEMENT_ADDRESS;
 
 export default function Claim() {
   const [message, setMessage] = useState('');

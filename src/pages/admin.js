@@ -3,8 +3,8 @@ import { ethers } from 'ethers';
 import OrganizationRegistry from 'D:/Programming/Solidity/ETH Advanced/module-1-assessment/artifacts/contracts/org.sol/OrganizationRegistry.json';
 import StakeholderManagement from 'D:/Programming/Solidity/ETH Advanced/module-1-assessment/artifacts/contracts/manage.sol/StakeholderManagement.json';
 
-const ORGANIZATION_REGISTRY_ADDRESS = YOUR-ORGANIZATION-REGISTRY-ADDRESS;
-const STAKEHOLDER_MANAGEMENT_ADDRESS = YOUR-STAKEHOLDER-MANAGEMENT-ADDRESS;
+const ORGANIZATION_REGISTRY_ADDRESS = process.env.ORGANIZATION_REGISTRY_ADDRESS;
+const STAKEHOLDER_MANAGEMENT_ADDRESS = process.env.STAKEHOLDER_MANAGEMENT_ADDRESS;
 
 export default function Admin() {
   const [orgName, setOrgName] = useState('');

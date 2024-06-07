@@ -3,8 +3,8 @@ import { ethers } from 'ethers';
 import OrganizationRegistry from 'D:/Programming/Solidity/ETH Advanced/module-1-assessment/artifacts/contracts/org.sol/OrganizationRegistry.json';
 import StakeholderManagement from 'D:/Programming/Solidity/ETH Advanced/module-1-assessment/artifacts/contracts/manage.sol/StakeholderManagement.json';
 
-const ORGANIZATION_REGISTRY_ADDRESS = process.env.ORGANIZATION_REGISTRY_ADDRESS;
-const STAKEHOLDER_MANAGEMENT_ADDRESS = process.env.STAKEHOLDER_MANAGEMENT_ADDRESS;
+const ORGANIZATION_REGISTRY_ADDRESS = process.env.NEXT_PUBLIC_ORGANIZATION_REGISTRY_ADDRESS;
+const STAKEHOLDER_MANAGEMENT_ADDRESS = process.env.NEXT_PUBLIC_STAKEHOLDER_MANAGEMENT_ADDRESS;
 
 export default function Admin() {
   const [orgName, setOrgName] = useState('');
@@ -72,6 +72,7 @@ export default function Admin() {
     } catch (err) {
       console.error(err);
       var error = JSON.stringify(err)
+      alert(error)
       if(error.includes('Organization already registered')){
         setMessage('Organization is already registered for this address');
       }

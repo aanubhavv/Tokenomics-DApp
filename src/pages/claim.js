@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import StakeholderManagement from 'D:/Programming/Solidity/ETH Advanced/module-1-assessment/artifacts/contracts/manage.sol/StakeholderManagement.json';
-require('dotenv').config()
 
-const ORGANIZATION_REGISTRY_ADDRESS = process.env.ORGANIZATION_REGISTRY_ADDRESS;
-const STAKEHOLDER_MANAGEMENT_ADDRESS = process.env.STAKEHOLDER_MANAGEMENT_ADDRESS;
+const ORGANIZATION_REGISTRY_ADDRESS = process.env.NEXT_PUBLIC_ORGANIZATION_REGISTRY_ADDRESS;
+const STAKEHOLDER_MANAGEMENT_ADDRESS = process.env.NEXT_PUBLIC_STAKEHOLDER_MANAGEMENT_ADDRESS;
 
 export default function Claim() {
   const [message, setMessage] = useState('');
@@ -159,11 +158,11 @@ return (
         </div>
 
         <div className="mb-8 p-6 rounded-lg shadow-lg bg-gray-800">
-          <h2 className="text-2xl font-semibold mb-4 text-green-400">Claimable Stakeholders</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-green-400">All Stakeholders</h2>
           <ul>
             {stakeholders.map((stakeholder, index) => (
               <li key={index} className="mb-2">
-                {stakeholder.name} - {stakeholder.stakeholderAddress} - {stakeholder.claimed ? 'Claimed' : 'Not Claimed'} - Amount: {ethers.utils.formatUnits("100000000000000000000", 18)} tokens
+                {stakeholder.name} - {stakeholder.stakeholderAddress} - {stakeholder.claimed ? 'Claimed' : 'Not Claimed'} - Amount: {ethers.formatUnits("100000000000000000000", 18)} tokens
               </li>
             ))}
           </ul>
@@ -184,7 +183,7 @@ return (
                     {message && <p className="mt-4 mb-4 text-green-500">{popUp}</p>}
                   </div>
                   <div className="text-right">
-                    <p className="text-xl font-bold">{ethers.utils.formatUnits("100000000000000000000", 18)} tokens</p>
+                    <p className="text-xl font-bold">{ethers.formatUnits("100000000000000000000", 18)} tokens</p>
                   </div>
                 </li>
               ))}

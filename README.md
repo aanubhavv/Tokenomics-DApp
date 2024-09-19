@@ -83,6 +83,17 @@ The smart contracts for this project are located in the `contracts` directory. T
 
 Ensure you have the appropriate network configuration in `hardhat.config.js`.
 
+
 ## License
 
+
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Screenshots
+
+![home](https://github.com/user-attachments/assets/fe147b88-8db0-42f6-877d-c90c902beab8)
+![admin](https://github.com/user-attachments/assets/94f95ace-8dd2-4edd-9669-2391c27668d6)
+![claim2](https://github.com/user-attachments/assets/96aa789a-24a0-450f-bbb3-767211f030c5)
+
+
+
